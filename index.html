@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>NHS delays map</title>
+  <meta name="description" content="NHS delays">
+  <meta name="author" content="SitePoint">
+  <style>#mapid { height: 800px; }</style>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
+  integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
+  crossorigin=""/>
+
+
+</head>
+
+<body>
+
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
+    integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
+    crossorigin=""></script>
+    <script src="nhs_delays.js"></script>
+
+    <div id="mapid"></div>
+    <script>
+    var mymap = L.map('mapid').setView([52.486, -1.89], 6);
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+        maxZoom: 18,
+        id: 'mapbox.light',
+        accessToken: 'pk.eyJ1Ijoicm9zYWUiLCJhIjoiY2pidW5rdHo3MXIyczJ4bnh2cWp1OWEwZSJ9.Nj-OKYdjBRXNs50cbPGBDA'
+    }).addTo(mymap);
+
+    L.geoJson(delays).addTo(mymap);
+    function getColor(d) {
+    return d > 9 ? '#980043' :
+           d > 7  ? '#dd1c77' :
+           d > 5  ? '#df65b0' :
+           d > 3  ? '#d7b5d8' :
+           d > 2   ? '#f1eef6' :
+                      '#f1eef6';
+}
+function style(feature) {
+    return {
+        fillColor: getColor(feature.properties.delayssocialcare),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+L.geoJson(delays, {style: style}).addTo(mymap);
+
+//Adds the pop up when user clicks (and digs into Json to get the data using dot notation. Always use 'feature.properties.NAMEOFPROPERTY' )
+function addPopup (feature,layer){
+  layer.bindPopup("<h2>"+ feature.properties.EER13NM +"</h2>" + "Delays per 100,000 population: " + feature.properties.delays + "</br></br> Delays per 100,000 population, because of lack of social care: " + feature.properties.delayssocialcare);
+};
+L.geoJson()
+
+// Adds the styling and the pop ups to the map
+L.geoJson(delays, {
+  style: style,
+  onEachFeature: addPopup
+}).addTo(mymap);
+
+</script>
+
+</body>
+</html>
