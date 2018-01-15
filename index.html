@@ -85,7 +85,7 @@ info.onAdd = function (mymap) {
 info.update = function (props) {
     this._div.innerHTML = '<h4>Rate of delayed transfers from NHS care</h4>' +  (props ?
         '<b>' + props.name + '</b><br />' + props.delays + ' people / mi<sup>2</sup>'
-        : 'Hover over a state');
+        : 'Click on a region');
 };
 
 info.addTo(mymap);
