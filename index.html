@@ -83,8 +83,8 @@ info.onAdd = function (mymap) {
 
 // method that we will use to update the control based on feature properties passed
 info.update = function (props) {
-    this._div.innerHTML = '<h4>US Population Density</h4>' +  (props ?
-        '<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>'
+    this._div.innerHTML = '<h4>Rate of delayed transfers from NHS care</h4>' +  (props ?
+        '<b>' + props.name + '</b><br />' + props.delays + ' people / mi<sup>2</sup>'
         : 'Hover over a state');
 };
 
@@ -103,7 +103,7 @@ var legend = L.control({position: 'bottomright'});
 legend.onAdd = function (mymap) {
 
     var div = L.DomUtil.create('div', 'info legend'),
-        grades = [0, 1, 2, 3, 4, 5, 6, 7],
+        grades = [1, 2, 3, 4, 5, 6, 7, 8, 9],
         labels = [];
 
     // loop through our density intervals and generate a label with a colored square for each interval
