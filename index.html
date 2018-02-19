@@ -46,77 +46,77 @@
 
     L.geoJson(delays).addTo(mymap);
     function getColor(d) {
-    return d > 9 ? '#a50f15' :
-           d > 7  ? '#de2d26' :
-           d > 5  ? '#fb6a4a' :
-           d > 3  ? '#fcae91' :
-           d > 2   ? '#fee5d9' :
-                      '#fee5d9';
-}
-function style(feature) {
-    return {
-        fillColor: getColor(feature.properties.delayssocialcare),
-        weight: 2,
-        opacity: 1,
-        color: 'white',
-        dashArray: '3',
-        fillOpacity: 0.7
-    };
-}
-L.geoJson(delays, {style: style}).addTo(mymap);
+          return d > 9 ? '#a50f15' :
+                 d > 7  ? '#de2d26' :
+                 d > 5  ? '#fb6a4a' :
+                 d > 3  ? '#fcae91' :
+                 d > 2   ? '#fee5d9' :
+                            '#fee5d9';
+     }
+     function style(feature) {
+          return {
+              fillColor: getColor(feature.properties.delayssocialcare),
+              weight: 2,
+              opacity: 1,
+              color: 'white',
+              dashArray: '3',
+              fillOpacity: 0.7
+          };
+      }
+      L.geoJson(delays, {style: style}).addTo(mymap);
 
 //Adds the pop up when user clicks (and digs into Json to get the data using dot notation. Always use 'feature.properties.NAMEOFPROPERTY' )
-function addPopup (feature,layer){
-  layer.bindPopup("<h2>"+ feature.properties.EER13NM +"</h2>" + "Delays per 100,000 population: " + feature.properties.delays + "</br></br> Delays per 100,000 population, because of lack of social care: " + feature.properties.delayssocialcare);
-};
-L.geoJson()
+      function addPopup (feature,layer){
+        layer.bindPopup("<h2>"+ feature.properties.EER13NM +"</h2>" + "Delays per 100,000 population: " + feature.properties.delays + "</br></br> Delays per 100,000 population, because of lack of social care: " + feature.properties.delayssocialcare);
+      };
+      L.geoJson()
       
 // This adds the bit of info in the corner
       
-var info = L.control();
+      var info = L.control();
 
-info.onAdd = function (mymap) {
-    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-    this.update();
-    return this._div;
-};
+      info.onAdd = function (mymap) {
+          this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+          this.update();
+          return this._div;
+      };
 
-// method that we will use to update the control based on feature properties passed
-info.update = function (props) {
-    this._div.innerHTML = '<h4>Rate of delayed transfers from NHS care</h4>' +  (props ?
-        '<b>' + props.name + '</b><br />' + props.delays + ' people / mi<sup>2</sup>'
-        : 'Click on a region');
-};
+      // method that we will use to update the control based on feature properties passed
+      info.update = function (props) {
+          this._div.innerHTML = '<h4>Rate of delayed transfers from NHS care</h4>' +  (props ?
+              '<b>' + props.name + '</b><br />' + props.delays + ' people / mi<sup>2</sup>'
+              : 'Click on a region');
+      };
 
-info.addTo(mymap);
+      info.addTo(mymap);
 
-// Adds the styling and the pop ups to the map
-L.geoJson(delays, {
-  style: style,
-  onEachFeature: addPopup
-}).addTo(mymap);
-      
-//This adds the legend: 
-      
-var legend = L.control({position: 'bottomright'});
+      // Adds the styling and the pop ups to the map
+      L.geoJson(delays, {
+        style: style,
+        onEachFeature: addPopup
+      }).addTo(mymap);
 
-legend.onAdd = function (mymap) {
+      //This adds the legend: 
 
-    var div = L.DomUtil.create('div', 'info legend'),
-        grades = [1, 2, 3, 4, 5, 6, 7, 8, 9],
-        labels = [];
+      var legend = L.control({position: 'bottomright'});
 
-    // loop through our density intervals and generate a label with a colored square for each interval
-    for (var i = 0; i < grades.length; i++) {
-        div.innerHTML +=
-            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
-    }
+      legend.onAdd = function (mymap) {
 
-    return div;
-};
+          var div = L.DomUtil.create('div', 'info legend'),
+              grades = [1, 2, 3, 4, 5, 6, 7, 8, 9],
+              labels = [];
 
-legend.addTo(mymap);
+          // loop through our density intervals and generate a label with a colored square for each interval
+          for (var i = 0; i < grades.length; i++) {
+              div.innerHTML +=
+                  '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+                  grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+          }
+
+          return div;
+      };
+
+      legend.addTo(mymap);
 
 </script>
 
